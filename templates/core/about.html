@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us - AceAttorn Legal Solutions{% endblock %}
+
+{% block content %}
+<!-- About Header -->
+<section class="page-header bg-light py-5 mb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-3 text-primary">About AceAttorn</h1>
+                <p class="lead mb-0">Innovative Legal Solutions for Modern Businesses</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="about-content py-5">
+    <div class="container">
+        <div class="row align-items-center mb-5">
+            <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
+                <img src="{% static 'img/relation.png' %}" alt="AceAttorn Team" class="img-fluid rounded shadow-lg">
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <p class="lead mb-4">Welcome to AceAttorn Legal Solutions, your trusted partner in navigating the intricate realms of Intellectual Property Rights (IPR) and Contractual Management. Our dedicated team of legal experts is committed to safeguarding your innovations and ensuring your contractual agreements are robust and legally sound. With a blend of expertise and personalized service, we strive to protect your assets and empower your business endeavors. Explore our comprehensive range of services tailored to meet your needs, and let us be your ally in securing your intellectual and commercial interests.</p>
+            </div>
+        </div>
+
+        <!-- Our Values -->
+        <div class="row mb-5">
+            <div class="col-12 text-center mb-4">
+                <h2 class="h3">Our Core Values</h2>
+                <p class="lead">The principles that guide our practice</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="value-icon mb-3">
+                            <i class="fas fa-balance-scale fa-3x text-primary"></i>
+                        </div>
+                        <h3 class="h5 mb-3">Excellence</h3>
+                        <p class="mb-0">We strive for excellence in every aspect of our legal services, ensuring the highest standards of professionalism and expertise.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="value-icon mb-3">
+                            <i class="fas fa-handshake fa-3x text-primary"></i>
+                        </div>
+                        <h3 class="h5 mb-3">Integrity</h3>
+                        <p class="mb-0">Our practice is built on a foundation of honesty, transparency, and unwavering ethical standards.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="value-icon mb-3">
+                            <i class="fas fa-lightbulb fa-3x text-primary"></i>
+                        </div>
+                        <h3 class="h5 mb-3">Innovation</h3>
+                        <p class="mb-0">We embrace modern solutions and creative approaches to solve complex legal challenges.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Our Services -->
+        <div class="row mb-5">
+            <div class="col-12 text-center mb-4">
+                <h2 class="h3">Our Services</h2>
+                <p class="lead">Comprehensive legal solutions tailored to your needs</p>
+            </div>
+            {% for service in services %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="{{ service.icon }} fa-2x text-primary me-3"></i>
+                            <h3 class="h5 mb-0">{{ service.title }}</h3>
+                        </div>
+                        <p class="mb-0">{{ service.description|safe }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Team Section -->
+        <!-- <div class="row">
+            <div class="col-12 text-center mb-4">
+                <h2 class="h3">Our Team</h2>
+                <p class="lead">Meet the experts behind AceAttorn Legal Solutions</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card team-card border-0 shadow-sm">
+                    <img src="{% static 'img/team-1.jpg' %}" class="card-img-top" alt="Team Member">
+                    <div class="card-body text-center">
+                        <h3 class="h5 mb-2">John Doe</h3>
+                        <p class="text-muted mb-3">Managing Partner</p>
+                        <div class="social-links">
+                            <a href="#" class="text-dark me-2"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="text-dark me-2"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-dark"><i class="far fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card team-card border-0 shadow-sm">
+                    <img src="{% static 'img/team-2.jpg' %}" class="card-img-top" alt="Team Member">
+                    <div class="card-body text-center">
+                        <h3 class="h5 mb-2">Jane Smith</h3>
+                        <p class="text-muted mb-3">IPR Specialist</p>
+                        <div class="social-links">
+                            <a href="#" class="text-dark me-2"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="text-dark me-2"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-dark"><i class="far fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card team-card border-0 shadow-sm">
+                    <img src="{% static 'img/team-3.jpg' %}" class="card-img-top" alt="Team Member">
+                    <div class="card-body text-center">
+                        <h3 class="h5 mb-2">Mike Johnson</h3>
+                        <p class="text-muted mb-3">Contract Manager</p>
+                        <div class="social-links">
+                            <a href="#" class="text-dark me-2"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="text-dark me-2"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-dark"><i class="far fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta-section py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mb-4 mb-lg-0">
+                <h2 class="mb-2">Ready to Work with Us?</h2>
+                <p class="mb-0">Contact us today for a consultation about your legal needs.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <a href="{% url 'core:contact' %}" class="btn btn-light btn-lg">Get in Touch</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .team-card img {
+        height: 300px;
+        object-fit: cover;
+    }
+    
+    .team-card {
+        transition: transform 0.3s ease;
+    }
+    
+    .team-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .value-icon {
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .social-links a {
+        font-size: 1.2rem;
+        transition: color 0.3s ease;
+    }
+    
+    .social-links a:hover {
+        color: var(--bs-primary) !important;
+    }
+</style>
+{% endblock %}

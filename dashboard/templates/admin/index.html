@@ -1,0 +1,100 @@
+{% extends "admin/index.html" %}
+{% load i18n static %}
+
+{% block content %}
+<div class="analytics-dashboard">
+    <style>
+        .analytics-dashboard {
+            padding: 20px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stats-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .stats-card h3 {
+            margin: 0 0 15px 0;
+            color: #2c3e50;
+            font-size: 1.2em;
+        }
+        .stats-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .stats-item:last-child {
+            border-bottom: none;
+        }
+        .stats-label {
+            color: #666;
+        }
+        .stats-value {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .stats-value.highlight {
+            color: #e74c3c;
+        }
+    </style>
+
+    <div class="stats-grid">
+        <!-- Messages Stats -->
+        <div class="stats-card">
+            <h3>{% trans "Contact Messages" %}</h3>
+            <div class="stats-item">
+                <span class="stats-label">{% trans "Total Messages" %}</span>
+                <span class="stats-value">{{ app_list.4.models.0.stats.messages.total }}</span>
+            </div>
+            <div class="stats-item">
+                <span class="stats-label">{% trans "Unread Messages" %}</span>
+                <span class="stats-value highlight">{{ app_list.4.models.0.stats.messages.unread }}</span>
+            </div>
+            <div class="stats-item">
+                <span class="stats-label">{% trans "Recent (7 days)" %}</span>
+                <span class="stats-value">{{ app_list.4.models.0.stats.messages.recent }}</span>
+            </div>
+        </div>
+
+        <!-- Services Stats -->
+        <div class="stats-card">
+            <h3>{% trans "Services" %}</h3>
+            <div class="stats-item">
+                <span class="stats-label">{% trans "Total Services" %}</span>
+                <span class="stats-value">{{ app_list.4.models.0.stats.services.total }}</span>
+            </div>
+            <div class="stats-item">
+                <span class="stats-label">{% trans "Active Services" %}</span>
+                <span class="stats-value">{{ app_list.4.models.0.stats.services.active }}</span>
+            </div>
+        </div>
+
+        <!-- Blog Stats -->
+        <div class="stats-card">
+            <h3>{% trans "Blog Posts" %}</h3>
+            <div class="stats-item">
+                <span class="stats-label">{% trans "Total Posts" %}</span>
+                <span class="stats-value">{{ app_list.4.models.0.stats.posts.total }}</span>
+            </div>
+            <div class="stats-item">
+                <span class="stats-label">{% trans "Published Posts" %}</span>
+                <span class="stats-value">{{ app_list.4.models.0.stats.posts.published }}</span>
+            </div>
+            <div class="stats-item">
+                <span class="stats-label">{% trans "Recent (30 days)" %}</span>
+                <span class="stats-value">{{ app_list.4.models.0.stats.posts.recent }}</span>
+            </div>
+        </div>
+    </div>
+
+    {{ block.super }}
+</div>
+{% endblock %}

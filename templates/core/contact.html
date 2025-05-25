@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Contact Us - AceAttorn Legal Solutions{% endblock %}
+
+{% block content %}
+<!-- Contact Header -->
+<section class="page-header bg-primary text-white py-5 mb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4">Contact Us</h1>
+                <p class="lead">Get in touch with our legal experts</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Content -->
+<section class="contact-content py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Contact Information -->
+            <div class="col-lg-4 mb-4 mb-lg-0">
+                <div class="contact-info">
+                    <h2 class="h4 mb-4">Get in Touch</h2>
+                    <div class="contact-item mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fas fa-map-marker-alt fa-2x text-primary me-3"></i>
+                            <h3 class="h5 mb-0">Our Office</h3>
+                        </div>
+                        <p class="mb-0">
+                            L 99, V.D.A Colony Shivpur<br>
+                            Varanasi, State 221003
+                        </p>
+                    </div>
+                    <div class="contact-item mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fas fa-phone fa-2x text-primary me-3"></i>
+                            <h3 class="h5 mb-0">Phone</h3>
+                        </div>
+                        <p class="mb-0">
+                            <a href="tel:+1234567890" class="text-dark text-decoration-none">+91 7379902583</a><br>
+                            <a href="tel:+1234567891" class="text-dark text-decoration-none">+91 9305527717</a>
+                        </p>
+                    </div>
+                    <div class="contact-item mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fas fa-envelope fa-2x text-primary me-3"></i>
+                            <h3 class="h5 mb-0">Email</h3>
+                        </div>
+                        <p class="mb-0">
+                            <a href="mailto:info@aceattornlegalsolutions.com" class="text-dark text-decoration-none">info@aceattornlegalsolutions.com</a><br>
+                            <a href="mailto:nikita@aceattornlegalsolutions.com" class="text-dark text-decoration-none">nikita@aceattornlegalsolutions.com</a>
+                        </p>
+                    </div>
+                    <div class="contact-item">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fas fa-clock fa-2x text-primary me-3"></i>
+                            <h3 class="h5 mb-0">Business Hours</h3>
+                        </div>
+                        <p class="mb-0">
+                            Monday - Friday: 10:00 AM - 6:00 PM<br>
+                            Saturday - Sunday: Closed<br>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <h2 class="h4 mb-4">Send Us a Message</h2>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form.name|as_crispy_field }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form.email|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.phone|as_crispy_field }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.subject|as_crispy_field }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.message|as_crispy_field }}
+                            </div>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Map Section -->
+<section class="map-section mt-5">
+    <div class="container-fluid p-0">
+        <div class="map-container" style="height: 400px;">
+            <!-- Replace the iframe src with your actual Google Maps embed code -->
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d57687.96896451548!2d82.92222242632064!3d25.35461898255279!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x398e2d004ecd50b5%3A0x856b17a826ba0fcd!2svda%20colony%20park(L-63)!5e0!3m2!1sen!2sin!4v1742737719721!5m2!1sen!2sin" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy">
+            </iframe>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .contact-item a {
+        transition: color 0.3s ease;
+    }
+    
+    .contact-item a:hover {
+        color: var(--bs-primary) !important;
+    }
+    
+    .map-container {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .map-container iframe {
+        filter: grayscale(1);
+        transition: filter 0.3s ease;
+    }
+    
+    .map-container iframe:hover {
+        filter: grayscale(0);
+    }
+    
+    .contact-info .contact-item {
+        transition: transform 0.3s ease;
+    }
+    
+    .contact-info .contact-item:hover {
+        transform: translateX(5px);
+    }
+</style>
+{% endblock %}

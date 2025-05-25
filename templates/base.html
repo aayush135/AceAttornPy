@@ -1,0 +1,180 @@
+{% load static %}
+{% load compress %}
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'meta/meta.html' %}
+    
+    <title>{% block title %}AceAttorn Legal Solutions{% endblock %}</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    {% compress css %}
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% endcompress %}
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="d-flex flex-column h-100">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'core:home' %}">
+                <span class="logo-text">
+                    <span class="ace">Ace</span><span class="attorn">Attorn</span>
+                </span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" 
+                           href="{% url 'core:home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" 
+                           href="{% url 'core:about' %}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'services' %}active{% endif %}" 
+                           href="{% url 'core:services' %}">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.namespace == 'blog' %}active{% endif %}" 
+                           href="{% url 'blog:post_list' %}">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" 
+                           href="{% url 'core:contact' %}">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-shrink-0">
+        {% if messages %}
+        <div class="container mt-4">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+     <!-- Footer -->
+     <footer class="footer py-4 mt-auto bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0">&copy; {% now "Y" %} AceAttorn Legal Solutions. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K6FY6MNMPM"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-K6FY6MNMPM');
+    </script>
+    
+    {% compress js %}
+    <!-- Custom JavaScript -->
+    <script src="{% static 'js/main.js' %}"></script>
+    {% endcompress %}
+    
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+    
+    <!-- Analytics Tracking -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize tracking variables
+            let startTime = Date.now();
+            let maxScroll = 0;
+            let clicks = 0;
+            let formInteractions = 0;
+            
+            // Track scroll depth
+            window.addEventListener('scroll', function() {
+                const scrollPercent = (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100;
+                maxScroll = Math.max(maxScroll, Math.round(scrollPercent));
+            });
+            
+            // Track clicks
+            document.addEventListener('click', function() {
+                clicks++;
+                console.log('Click tracked:', clicks); // Debug logging
+            });
+            
+            // Track form interactions
+            document.querySelectorAll('input, textarea, select').forEach(function(element) {
+                element.addEventListener('focus', function() {
+                    formInteractions++;
+                    console.log('Form interaction tracked:', formInteractions); // Debug logging
+                });
+            });
+            
+            // Send engagement data before page unload
+            window.addEventListener('beforeunload', function() {
+                const engagementData = {
+                    page_time: Math.round((Date.now() - startTime) / 1000),
+                    scroll_depth: maxScroll,
+                    clicks: clicks,
+                    form_interactions: formInteractions,
+                    path: window.location.pathname
+                };
+                
+                console.log('Sending engagement data:', engagementData); // Debug logging
+                
+                // Use sendBeacon to ensure the request gets sent
+                navigator.sendBeacon('/analytics/track-engagement/', JSON.stringify(engagementData));
+            });
+        });
+    </script>
+</body>
+</html>

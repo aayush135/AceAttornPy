@@ -1,0 +1,303 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link href="https://cdn.jsdelivr.net/npm/apexcharts@3.41.0/dist/apexcharts.css" rel="stylesheet">
+<style>
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+        padding: 20px;
+    }
+    .stats-card {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .stats-card h3 {
+        margin: 0 0 15px 0;
+        color: #2c3e50;
+        font-size: 1.2em;
+    }
+    .chart-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        gap: 20px;
+        margin: 20px;
+    }
+    .chart-container {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        min-height: 400px;
+    }
+    .real-time-stats {
+        display: flex;
+        justify-content: space-between;
+        margin: 20px;
+        padding: 0 20px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .real-time-item {
+        text-align: center;
+        padding: 20px;
+        background: #3498db;
+        color: white;
+        border-radius: 8px;
+        flex: 1;
+        min-width: 200px;
+    }
+    .real-time-value {
+        font-size: 2em;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <h1>Analytics Dashboard</h1>
+
+    <!-- Real-time Stats -->
+    <div class="real-time-stats">
+        <div class="real-time-item">
+            <div class="real-time-value">{{ active_users }}</div>
+            <div>Active Users</div>
+        </div>
+        <div class="real-time-item">
+            <div class="real-time-value">{{ current_page_views }}</div>
+            <div>Current Page Views</div>
+        </div>
+        <div class="real-time-item">
+            <div class="real-time-value">{{ traffic_overview.unique_visitors|default:0 }}</div>
+            <div>Unique Visitors (30d)</div>
+        </div>
+        <div class="real-time-item">
+            <div class="real-time-value">{{ traffic_overview.bounce_rate|floatformat:1 }}%</div>
+            <div>Bounce Rate</div>
+        </div>
+    </div>
+
+    <!-- Charts Grid -->
+    <div class="chart-grid">
+        <!-- Traffic Chart -->
+        <div class="chart-container">
+            <h3>Hourly Traffic Pattern</h3>
+            <div id="hourlyTrafficChart"></div>
+        </div>
+
+        <!-- Device Distribution Chart -->
+        <div class="chart-container">
+            <h3>Device Distribution</h3>
+            <div id="deviceChart"></div>
+        </div>
+
+        <!-- Geographic Distribution Chart -->
+        <div class="chart-container">
+            <h3>Top Countries</h3>
+            <div id="geoChart"></div>
+        </div>
+
+        <!-- User Engagement Chart -->
+        <div class="chart-container">
+            <h3>User Engagement Metrics</h3>
+            <div id="engagementChart"></div>
+        </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+        <!-- Traffic Overview -->
+        <div class="stats-card">
+            <h3>Traffic Overview</h3>
+            <div class="d-flex justify-content-between mb-2">
+                <span>Total Views (30d)</span>
+                <span>{{ traffic_overview.total_views|default:0 }}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+                <span>Unique Visitors</span>
+                <span>{{ traffic_overview.unique_visitors|default:0 }}</span>
+            </div>
+            <div class="d-flex justify-content-between">
+                <span>Bounce Rate</span>
+                <span>{{ traffic_overview.bounce_rate|floatformat:1 }}%</span>
+            </div>
+        </div>
+
+        <!-- User Engagement -->
+        <div class="stats-card">
+            <h3>User Engagement</h3>
+            <div class="d-flex justify-content-between mb-2">
+                <span>Avg. Time on Page</span>
+                <span>{{ engagement_stats.avg_time|floatformat:0 }}s</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+                <span>Avg. Scroll Depth</span>
+                <span>{{ engagement_stats.avg_scroll|floatformat:0 }}%</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+                <span>Avg. Clicks per Page</span>
+                <span>{{ engagement_stats.avg_clicks|floatformat:1 }}</span>
+            </div>
+            <div class="d-flex justify-content-between">
+                <span>Form Interactions</span>
+                <span>{{ engagement_stats.form_interactions|default:0 }}</span>
+            </div>
+        </div>
+
+        <!-- Search Analytics -->
+        <div class="stats-card">
+            <h3>Search Analytics</h3>
+            <div class="d-flex justify-content-between mb-2">
+                <span>Total Searches</span>
+                <span>{{ search_stats.total_searches|default:0 }}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+                <span>Successful Searches</span>
+                <span>{{ search_stats.successful_searches|default:0 }}</span>
+            </div>
+            <div class="d-flex justify-content-between">
+                <span>Avg. Results per Search</span>
+                <span>{{ search_stats.avg_results|floatformat:1 }}</span>
+            </div>
+        </div>
+
+        <!-- Top Entry Pages -->
+        <div class="stats-card">
+            <h3>Top Entry Pages</h3>
+            {% for page in entry_exit_pages.entry_pages %}
+            <div class="d-flex justify-content-between mb-2">
+                <span title="{{ page.path }}">{{ page.path|truncatechars:30 }}</span>
+                <span>{{ page.entries }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+{{ block.super }}
+<script src="https://cdn.jsdelivr.net/npm/apexcharts@3.41.0/dist/apexcharts.min.js"></script>
+<script>
+    // Hourly Traffic Chart
+    var hourlyData = {{ hourly_traffic|safe }};
+    var hourlyOptions = {
+        series: [{
+            name: 'Page Views',
+            data: hourlyData.map(item => item.views)
+        }],
+        chart: {
+            type: 'area',
+            height: 350,
+            toolbar: {
+                show: false
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            curve: 'smooth'
+        },
+        xaxis: {
+            type: 'datetime',
+            categories: hourlyData.map(item => item.hour)
+        },
+        tooltip: {
+            x: {
+                format: 'dd MMM yyyy HH:mm'
+            }
+        },
+        theme: {
+            palette: 'palette1'
+        }
+    };
+    new ApexCharts(document.querySelector("#hourlyTrafficChart"), hourlyOptions).render();
+
+    // Device Distribution Chart
+    var deviceData = {{ device_stats|safe }};
+    var deviceOptions = {
+        series: deviceData.map(item => item.count),
+        chart: {
+            type: 'donut',
+            height: 350
+        },
+        labels: deviceData.map(item => item.device_type || 'Unknown'),
+        theme: {
+            palette: 'palette2'
+        },
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                chart: {
+                    width: 200
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }]
+    };
+    new ApexCharts(document.querySelector("#deviceChart"), deviceOptions).render();
+
+    // Geographic Distribution Chart
+    var geoData = {{ geo_stats|safe }};
+    var geoOptions = {
+        series: [{
+            name: 'Visits',
+            data: geoData.map(item => item.visits)
+        }],
+        chart: {
+            type: 'bar',
+            height: 350
+        },
+        plotOptions: {
+            bar: {
+                borderRadius: 4,
+                horizontal: true,
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        xaxis: {
+            categories: geoData.map(item => item.country || 'Unknown'),
+        },
+        theme: {
+            palette: 'palette3'
+        }
+    };
+    new ApexCharts(document.querySelector("#geoChart"), geoOptions).render();
+
+    // User Engagement Chart
+    var engagementOptions = {
+        series: [{
+            name: 'Metrics',
+            data: [
+                {{ engagement_stats.avg_time|default:0 }},
+                {{ engagement_stats.avg_scroll|default:0 }},
+                {{ engagement_stats.avg_clicks|default:0 }},
+                {{ engagement_stats.form_interactions|default:0 }}
+            ]
+        }],
+        chart: {
+            type: 'radar',
+            height: 350
+        },
+        xaxis: {
+            categories: ['Avg Time (s)', 'Scroll Depth (%)', 'Clicks', 'Form Interactions']
+        },
+        theme: {
+            palette: 'palette4'
+        }
+    };
+    new ApexCharts(document.querySelector("#engagementChart"), engagementOptions).render();
+</script>
+{% endblock %}
