@@ -34,7 +34,7 @@ class Command(BaseCommand):
             flow = InstalledAppFlow.from_client_secrets_file(
                 settings.GOOGLE_OAUTH2_CLIENT_SECRETS_FILE,
                 SCOPES,
-                redirect_uri='http://localhost:80/oauth2callback'
+                redirect_uri='http://localhost:8000/oauth2callback'
             )
             
             # Get the authorization URL
